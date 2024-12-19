@@ -1,15 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState,useRef,useEffect } from 'react';
 import { BookOpen } from 'lucide-react';
 import ImageProvider from '@/components/ImageProvider';
 import UploadAudio from '@/components/UploadAudio';
 import FillInTheBlanks from '@/components/FillInTheBlanks'
 import CompleteText from '@/components/CompleteText';
-import OrderColumn from '@/components/OrderColumn';
 import OrderText from '@/components/OrderText';
-import SelectQuestions from '@/components/SelectQuestions';
+import SingleSelectQuestion from '@/components/SelectQuestions';
 import WordsAndImage from '@/components/WordsAndImage.jsx';
+import { WordMatchGame } from '@/components/OrderColumn';
+import FillWordsList from '@/components/FillWordList';
 
 
 
@@ -18,14 +19,31 @@ export default function AddExercise() {
   const [modalContent, setModalContent] = useState(''); // Contenido dinámico del modal
   const [exercises, setExercises] = useState([]); // Lista de 
   const [userAnswers, setUserAnswers] = useState({});
+   // Referencia al modal
+  const modalRef = useRef(null);
 
+  useEffect(() => {
+    const modalState = localStorage.getItem('isModalOpen');
+    if (modalState === 'true') {
+      setIsModalOpen(true); // Mantener el modal abierto si está guardado en el localStorage
+    }
+  }, []);
   // Abrir el modal
-  const openModal = () => setIsModalOpen(true);
-
+  const openModal = () => {
+    setIsModalOpen(true);
+    localStorage.setItem('isModalOpen', 'true'); // Guardar el estado del modal abierto en localStorage
+  };
   // Cerrar el modal
   const closeModal = () => {
     setIsModalOpen(false);
     setModalContent('');
+  };
+
+  const handleOverlayClick = (e) => {
+    // Cierra el modal si el clic ocurre fuera del contenedor del modal
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      closeModal();
+    }
   };
 
   // Agregar ejercicio a la lista
@@ -51,7 +69,7 @@ export default function AddExercise() {
   const openDraggableText = () => setModalContent('orderText');
   const openSingleSelectQuestion = () => setModalContent('selectQuestion');
   const openDraggableimage = () => setModalContent('wordsAndImage');
-
+  const openFillWordsList = () => setModalContent('fillWordsList');
 
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gray-100">
@@ -91,46 +109,45 @@ export default function AddExercise() {
                   )}
                   
                   {exercise.audio && (
-  <div className="p-4 border rounded-lg shadow-md">
-    {/* Mostrar el título del audio */}
-    {exercise.nombre && (
-      <h3 className="text-xl font-semibold text-gray-800">{exercise.nombre}</h3>
-    )}
+                    <div className="p-4 border rounded-lg shadow-md">
+                  {/* Mostrar el título del audio */}
+                  {exercise.nombre && (
+                    <h3 className="text-xl font-semibold text-gray-800">{exercise.nombre}</h3>
+                  )}
 
-    {/* Mostrar la descripción del audio */}
-    {exercise.description && (
-      <p className="mt-2 text-sm text-gray-600">{exercise.description}</p>
-    )}
+                  {/* Mostrar la descripción del audio */}
+                  {exercise.description && (
+                    <p className="mt-2 text-sm text-gray-600">{exercise.description}</p>
+                  )}
 
-    {/* Mostrar el reproductor de audio */}
-    <audio controls className="w-full mt-2">
-      <source src={URL.createObjectURL(exercise.audio)} type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
-  </div>
-)}
+                  {/* Mostrar el reproductor de audio */}
+                    <audio controls className="w-full mt-2">
+                    <source src={URL.createObjectURL(exercise.audio)} type="audio/mpeg" />
+                    Your browser does not support the audio element.
+                    </audio>
+                  </div>
+                  )}
                   
                   {exercise.nombre && (
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">{exercise.nombre}</h3> // Mostrar el título
-)}
+                    <h3 className="text-xl font-semibold text-gray-800 mb-4">{exercise.nombre}</h3> // Mostrar el título
+                  )}
 
-{exercise.textoEjercicio &&
-  exercise.textoEjercicio.split(/(\[.*?\])/).map((part, idx) => {
-    if (part.startsWith('[') && part.endsWith(']')) {
-      return (
-        <input
-          key={idx}
-          type="text"
-          className="border-b border-gray-300 focus:border-[#FEAB5F] outline-none px-1 w-20 inline-block"
-          placeholder="Completar"
-          value={userAnswers[idx] || ''} // Vinculado al estado
-          onChange={(e) => handleInputChange(idx, e.target.value)} // Actualiza el estado
-        />
-      );
-    }
-    return <span key={idx}>{part}</span>;
-  })}
-
+                  {exercise.textoEjercicio &&
+                    exercise.textoEjercicio.split(/(\[.*?\])/).map((part, idx) => {
+                      if (part.startsWith('[') && part.endsWith(']')) {
+                    return (
+                    <input
+                      key={idx}
+                      type="text"
+                      className="border-b border-gray-300 focus:border-[#FEAB5F] outline-none px-1 w-20 inline-block"
+                      placeholder="Completar"
+                      value={userAnswers[idx] || ''} // Vinculado al estado
+                      onChange={(e) => handleInputChange(idx, e.target.value)} // Actualiza el estado
+                    />
+                    );
+                  }
+                  return <span key={idx}>{part}</span>;
+                  })}
                 </div>
               ))}
             </div>
@@ -150,84 +167,103 @@ export default function AddExercise() {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 ">
-          <div className="bg-white p-6 rounded-lg w-full max-w-[40%] max-h-[70vh] overflow-y-auto">
+        
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
+          onClick={handleOverlayClick} // Detecta clics en el overlay
+        >
+          <div
+            className="bg-white p-6 rounded-lg w-full max-w-[95%] sm:max-w-[80%] md:max-w-[60%] lg:max-w-[40%] max-h-[70vh] overflow-y-auto"
+            ref={modalRef}
+          >
+
             <h2 className="text-2xl font-bold mb-4">Choose an Action</h2>
           
       {modalContent === '' && (
-        <div className="grid grid-cols-2 gap-4 w-full max-w-[100%] ">
+        <div className="grid grid-cols-2 gap-4 w-full ">
           
           <div
-              className="flex items-end cursor-pointer p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-64 h-64 "
-              style={{ backgroundImage: "url('/books.png')" }}
-              onClick={openImageProvider}
-            >
-            <h3 className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300">
-              Cargar Imagen</h3>
-          </div>
+          className="flex flex-col justify-end items-end p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-full aspect-square min-h-[150px] sm:min-h-[200px] md:min-h-[250px] lg:min-h-[300px] bg-no-repeat"
+          style={{ backgroundImage: "url('/books.png')" }}
+          onClick={openImageProvider}
+        >
+          <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
+            Cargar Imagen
+          </h3>
+        </div>
+
           <div
-            className="flex items-end cursor-pointer p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-64 h-64"
-            style={{ backgroundImage: "url('/books.png')" }}
-            onClick={openAudioProvider}
+              className="flex flex-col justify-end items-end p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-full aspect-square min-h-[150px] sm:min-h-[200px] md:min-h-[250px] lg:min-h-[300px] bg-no-repeat"
+              style={{ backgroundImage: "url('/books.png')" }}
+              onClick={openAudioProvider}
           >
-            <h3 className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 ">
-              Cargar Audio
+            <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
+                Cargar Audio
             </h3>
           </div>
           <div
-            className="flex items-end cursor-pointer p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-64 h-64"
+            className="flex flex-col justify-end items-end p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-full aspect-square min-h-[150px] sm:min-h-[200px] md:min-h-[250px] lg:min-h-[300px] bg-no-repeat"
             style={{ backgroundImage: "url('/books.png')" }}
             onClick={openFillInTheBlanks}
           >
-            <h3 className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300">
+            <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
               Fill in the Blanks
               <br />
             </h3>
           </div>
-          
+
           <div
-            className="flex items-end cursor-pointer p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-64 h-64"
+            className="flex flex-col justify-end items-end p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-full aspect-square min-h-[150px] sm:min-h-[200px] md:min-h-[250px] lg:min-h-[300px] bg-no-repeat"
             style={{ backgroundImage: "url('/books.png')" }}
             onClick={openDropdownParagraph}
           >
-            <h3 className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300">
+            <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
               Complete Text
             </h3>
           </div>
           <div
-            className="flex items-end cursor-pointer p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-64 h-64"
+            className="flex flex-col justify-end items-end p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-full aspect-square min-h-[150px] sm:min-h-[200px] md:min-h-[250px] lg:min-h-[300px] bg-no-repeat"
             style={{ backgroundImage: "url('/books.png')" }}
             onClick={openWordMatchGame}
           >
-            <h3 className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300">
+            <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
               Order Column
             </h3>
           </div>
           <div
-            className="flex items-end cursor-pointer p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-64 h-64 "
+            className="flex flex-col justify-end items-end p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-full aspect-square min-h-[150px] sm:min-h-[200px] md:min-h-[250px] lg:min-h-[300px] bg-no-repeat"
             style={{ backgroundImage: "url('/books.png')" }}
             onClick={openDraggableText}
           >
-            <h3 className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300">
+            <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
               Order Text
             </h3>
           </div>
           <div
-            className="flex items-end cursor-pointer p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-64 h-64"
+            className="flex flex-col justify-end items-end p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-full aspect-square min-h-[150px] sm:min-h-[200px] md:min-h-[250px] lg:min-h-[300px] bg-no-repeat"
             style={{ backgroundImage: "url('/books.png')" }}
             onClick={openSingleSelectQuestion}
           >
-            <h3 className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300">
+            <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
               Select Question
             </h3>
           </div>
           <div
-            className="flex items-end cursor-pointer p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-64 h-64"
+            className="flex flex-col justify-end items-end p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-full aspect-square min-h-[150px] sm:min-h-[200px] md:min-h-[250px] lg:min-h-[300px] bg-no-repeat"
             style={{ backgroundImage: "url('/books.png')" }}
             onClick={openDraggableimage}
           >
-            <h3 className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300">
+            <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
               Word Image Match
+            </h3>
+          </div>
+          <div
+            className="flex flex-col justify-end items-end p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-full aspect-square min-h-[150px] sm:min-h-[200px] md:min-h-[250px] lg:min-h-[300px] bg-no-repeat"
+            style={{ backgroundImage: "url('/books.png')" }}
+            onClick={openFillWordsList}
+          >
+            <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
+              Fill with Words List
             </h3>
           </div>
         </div>
@@ -247,19 +283,21 @@ export default function AddExercise() {
               <CompleteText onClose={closeModal} onSave={handleExerciseAdd} />
             )}
             {modalContent === 'orderColumn' && (
-              <OrderColumn onClose={closeModal} onSave={handleExerciseAdd} />
+              <WordMatchGame onClose={closeModal} onSave={handleExerciseAdd} />
             )}
             {modalContent === 'orderText' && (
               <OrderText onClose={closeModal} onSave={handleExerciseAdd} />
             )}
-            {modalContent === 'selectQuestions' && (
-              <SelectQuestions onClose={closeModal} onSave={handleExerciseAdd} />
+            {modalContent === 'selectQuestion' && (
+              <SingleSelectQuestion onClose={closeModal} onSave={handleExerciseAdd} />
             )}
             {modalContent === 'wordsAndImage' && (
               <WordsAndImage onClose={closeModal} onSave={handleExerciseAdd} />
             )}
+            {modalContent === 'fillWordsList' && (
+              <FillWordsList onClose={closeModal} onSave={handleExerciseAdd} />
+            )}
             
-
             {/* Botón para cerrar el modal */}
             <button
               onClick={closeModal}
