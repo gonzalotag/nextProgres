@@ -101,6 +101,21 @@ export default function Dashboard() {
               <Star className="h-5 w-5 mr-2" />
               <span className="text-sm">Reseñas</span>
             </button>
+            <button
+              className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300"
+              onClick={() => handleNavigation('/reviews')}
+            >
+              <Star className="h-5 w-5 mr-2" />
+              <span className="text-sm">Contactos</span>
+            </button>
+
+            <button
+              className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300"
+              onClick={() => handleNavigation('/reviews')}
+            >
+              <Users className="h-5 w-5 mr-2" />
+              <span className="text-sm">Sobre Nosotros</span>
+            </button>
           </div>
         </section>
 

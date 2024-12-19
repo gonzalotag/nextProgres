@@ -9,7 +9,7 @@ import CompleteText from '@/components/CompleteText';
 import OrderColumn from '@/components/OrderColumn';
 import OrderText from '@/components/OrderText';
 import SelectQuestions from '@/components/SelectQuestions';
-import WordsAndImage from '@/components/WordsAndImage';
+import WordsAndImage from '@/components/WordsAndImage.jsx';
 
 
 
@@ -182,10 +182,9 @@ export default function AddExercise() {
             <h3 className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300">
               Fill in the Blanks
               <br />
-              
             </h3>
-            
           </div>
+          
           <div
             className="flex items-end cursor-pointer p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-64 h-64"
             style={{ backgroundImage: "url('/books.png')" }}
