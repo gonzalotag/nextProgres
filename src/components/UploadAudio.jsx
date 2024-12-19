@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 export default function UploadAudio({ isOpen, onClose, onAudioUpload }) {
   const [audioFile, setAudioFile] = useState(null);
   const [audioInputName, setAudioInputName] = useState('');
+  const [description, setDescription] = useState('');
 
   const handleAudioUpload = (event) => {
     const file = event.target.files[0];
@@ -14,7 +15,11 @@ export default function UploadAudio({ isOpen, onClose, onAudioUpload }) {
   const handleSave = () => {
     if (audioFile && audioInputName) {
       // Aquí usamos la función pasada como prop
-      onAudioUpload({ nombre: audioInputName, audio: audioFile });
+      onAudioUpload({
+        nombre: audioInputName,
+        audio: audioFile,
+        description: description,  // Aquí agregamos la descripción
+      });
       onClose(); // Cerrar el modal
     } else {
       alert('Por favor, completa todos los campos.');
@@ -39,6 +44,18 @@ export default function UploadAudio({ isOpen, onClose, onAudioUpload }) {
           />
         </div>
 
+        <div className="mb-4 mt-4">
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          Description
+        </label>
+        <textarea
+          id="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+          placeholder="Enter image description"
+        />
+      </div>
         <div className="mb-4">
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Archivo de Audio</h3>
           <input
