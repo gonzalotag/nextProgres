@@ -13,7 +13,7 @@ const ImageModal = ({ isOpen, onClose, tituloPlantilla, description, imgURL, url
         <img src={imgURL} alt={tituloPlantilla} className="w-full h-auto mb-4 rounded" />
         <p>{description}</p>
         <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline mt-4 block">
-          View Full Image
+          Ver imagen Completa
         </a>
       </div>
     </div>

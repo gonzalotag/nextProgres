@@ -80,7 +80,7 @@ const DraggableText = () => {
   return (
     <div className="p-4">
       <div className="mb-4">
-        <label className="block mb-2">Title:</label>
+        <label className="block mb-2">Titulo:</label>
         <input
           type="text"
           value={title}
@@ -91,7 +91,7 @@ const DraggableText = () => {
 
       <div className="mb-4">
       <label className="block mb-2">La imagen seleccionada debe ir con un texto para emparejar:</label>
-        <label className="block mb-2">Upload Image:</label>
+        <label className="block mb-2">Cargar Image:</label>
         <input
           type="file"
           accept="image/*"
@@ -106,14 +106,14 @@ const DraggableText = () => {
       </div>
 
       <div className="mb-4">
-        <label className="block mb-2">Text for Image:</label>
+        <label className="block mb-2">Texto para emparejar a la imagen:</label>
         <input
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
           className="border rounded p-2 w-full"
         />
-        <button onClick={handleAddImage} className="bg-blue-500 text-white px-4 py-2 rounded mt-2">Add Image</button>
+        <button onClick={handleAddImage} className="bg-blue-500 text-white px-4 py-2 rounded mt-2">Agregar imagen</button>
       </div>
 
       <div className="flex space-x-8 mb-4">

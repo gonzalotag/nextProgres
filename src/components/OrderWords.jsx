@@ -61,11 +61,11 @@ const DraggableLetters = () => {
 
   return (
     <div className="p-8 max-w-4xl mx-auto bg-white rounded-xl shadow-lg">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Letter Drag and Drop Game</h2>
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">juego de arrastrar y soltar letras</h2>
       
       <div className="space-y-6">
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Title:</label>
+          <label className="block text-sm font-medium text-gray-700">Titulo:</label>
           <input
             type="text"
             value={title}
@@ -76,7 +76,7 @@ const DraggableLetters = () => {
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Word to guess:</label>
+          <label className="block text-sm font-medium text-gray-700">Palabra a formar:</label>
           <input
             type="text"
             value={word}
@@ -119,7 +119,7 @@ const DraggableLetters = () => {
                      transition-colors duration-200 focus:outline-none focus:ring-2 
                      focus:ring-green-500 focus:ring-offset-2"
           >
-            Save
+            Guardar
           </button>
           <button 
             onClick={handleCancel}
@@ -127,7 +127,7 @@ const DraggableLetters = () => {
                      transition-colors duration-200 focus:outline-none focus:ring-2 
                      focus:ring-red-500 focus:ring-offset-2"
           >
-            Cancel
+            Cancelar
           </button>
         </div>
       </div>

@@ -36,10 +36,10 @@ export default function FormularioRegistroEstudiante({ onCreate }) {
   return (
     <div className={`fixed top-0 left-0 w-full h-full bg-gray-500 bg-opacity-75 flex justify-center items-center transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
       <div className="bg-white p-4 rounded-lg shadow-md w-1/2">
-        <h2 className="text-lg text-gray-900 mb-2">Create Student</h2>
+        <h2 className="text-lg text-gray-900 mb-2">Crear Estudiante</h2>
         <form>
           <div className="mb-4">
-            <label className="text-gray-900">Profile Picture:</label>
+            <label className="text-gray-900">Imagen de Perfil:</label>
             <input
               type="file"
               accept="image/*"
@@ -52,12 +52,12 @@ export default function FormularioRegistroEstudiante({ onCreate }) {
               onClick={() => document.getElementById('file-input').click()}
               className="bg-[#FEAB5F] text-white py-2 px-4 rounded transition duration-200"
             >
-              Upload Photo
+              Cargar Foto
             </button>
             {imagen && <img src={imagen} alt="Perfil" className="mt-2 w-16 h-16 object-cover rounded-full" />}
           </div>
           <div className="mb-4">
-            <label className="text-gray-900">Mail:</label>
+            <label className="text-gray-900">EMail:</label>
             <input
               type="email"
               placeholder="Ingrese correo electrónico"
@@ -67,7 +67,7 @@ export default function FormularioRegistroEstudiante({ onCreate }) {
             />
           </div>
           <div className="mb-4">
-            <label className="text-gray-900">Telephone:</label>
+            <label className="text-gray-900">Telefono:</label>
             <input
               type="text"
               placeholder="Ingrese número de teléfono"
@@ -77,7 +77,7 @@ export default function FormularioRegistroEstudiante({ onCreate }) {
             />
           </div>
           <div className="mb-4">
-            <label className="text-gray-900">Name:</label>
+            <label className="text-gray-900">Nombre:</label>
             <input
               type="text"
               placeholder="Ingrese nombre"
@@ -87,7 +87,7 @@ export default function FormularioRegistroEstudiante({ onCreate }) {
             />
           </div>
           <div className="mb-4">
-            <label className="text-gray-900">Native Language:</label>
+            <label className="text-gray-900">Lengua Nativa:</label>
             <select
               value={lengua}
               onChange={(e) => setLengua(e.target.value)}
@@ -101,16 +101,16 @@ export default function FormularioRegistroEstudiante({ onCreate }) {
           
           <div className="flex justify-end">
             <button
-              className="bg-gray-500 text-black hover:bg-[#FEAB5F] hover:text-white py-2 px-4 rounded mr-2 transition duration-200"
-              onClick={handleClose}
-            >
-              Cancel
-            </button>
-            <button
               className="bg-[#FEAB5F] text-black hover:bg-gray-500 hover:text-white py-2 px-4 rounded transition duration-200"
               onClick={handleCreate}
             >
-              Create
+              Guardar
+            </button>
+            <button
+              className="bg-gray-500 text-black hover:bg-[#FEAB5F] hover:text-white py-2 px-4 rounded mr-2 transition duration-200"
+              onClick={handleClose}
+            >
+              Cancelar
             </button>
           </div>
         </form>

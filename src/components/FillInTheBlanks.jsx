@@ -84,7 +84,7 @@ export default function FillInTheBlanksModal({ isOpen, onClose, onSave }) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Create new exercise</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Rellenar Espacios</h2>
 
         {/* Campo para el título de la tarea */}
         <div className="mb-4">
@@ -104,9 +104,9 @@ export default function FillInTheBlanksModal({ isOpen, onClose, onSave }) {
         {/* Campo para el texto del ejercicio */}
         <div className="mb-4">
           <label htmlFor="exercise-text" className="block text-lg font-medium text-gray-900 mb-1">
-            Text of exercise
+            Texto para el ejercicio
             <br />
-            Enter exercise text. Use [brackets] for words to be filled in.
+            Ingresa el texto. Usa [ ] para las palabras a rellenar.
           </label>
           <textarea
             id="exercise-text"
@@ -118,7 +118,7 @@ export default function FillInTheBlanksModal({ isOpen, onClose, onSave }) {
 
           {/* Vista previa del ejercicio */}
         <div className="mb-4 p-4 border border-gray-300 rounded-md">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Preview:</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">Vista Previa:</h3>
           {/* Mostrar el título y el texto con los campos de autocompletar */}
             {task && <h4 className="text-xl font-semibold text-gray-800 mb-2">{task}</h4>}
 
@@ -133,13 +133,13 @@ export default function FillInTheBlanksModal({ isOpen, onClose, onSave }) {
             onClick={handleSave}
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
           >
-            Save
+            Guardar
           </button>
           <button
             onClick={onClose}
             className="px-4 py-2 bg-[#FEAB5F] text-white rounded-md hover:bg-[#FE9B3F] transition-colors"
           >
-            Cancel
+            Cancelar
           </button>
         </div>
       </div>

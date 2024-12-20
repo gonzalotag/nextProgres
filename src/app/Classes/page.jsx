@@ -75,7 +75,14 @@ export default function ClassesPage() {
         />
 
         {/* Card for classes */}
+
         <div className="bg-white shadow-md rounded-lg p-6 max-w-4xl mx-auto">
+        <button
+          className="bg-gray-500 hover:bg-gray-700 text-white rounded py-2 px-4 transition-colors duration-300 hover:text-black mt-4"
+          onClick={() => router.push('/Admin')}
+        >
+          Regresar a la página de inicio
+        </button>
           {/* Button to create new class */}
           <div className="flex justify-center mb-4">
             <button

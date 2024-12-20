@@ -61,7 +61,7 @@ const SingleSelectQuestion = () => {
         className="border rounded p-2 w-full mb-4"
       />
 
-      <h3 className="text-red-500 font-bold mb-2">Partes del texto:</h3>
+      <h3 className="text-red-500 font-bold mb-2">Partes del texto a ordenar :</h3>
       {parts.map((part, index) => (
         <div key={index} className="flex items-center mb-2">
           <input

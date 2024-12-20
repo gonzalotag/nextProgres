@@ -124,6 +124,7 @@ export default function Dashboard() {
         <Subtitle
             icon={<ArrowRight className="relative text-black font-semibold bg-[#FEAB5F] rounded-full" />}
             title="Students"
+            onClick={() => handleNavigation('/Student')}
         />
           <button
               className="bg-white shadow-md rounded-lg p-6"

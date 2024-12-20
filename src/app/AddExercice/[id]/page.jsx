@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState,useRef,useEffect } from 'react';
+import { useRouter } from 'next/navigation'; 
 import { BookOpen } from 'lucide-react';
 import ImageProvider from '@/components/ImageProvider';
 import UploadAudio from '@/components/UploadAudio';
@@ -14,6 +15,7 @@ import DraggableWords from '@/components/FillWordList';
 import DraggableLetters from '@/components/OrderWords';
 
 export default function AddExercise() {
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(''); // Contenido dinámico del modal
   const [exercises, setExercises] = useState([]); // Lista de 
@@ -75,7 +77,16 @@ export default function AddExercise() {
     <div className="h-screen flex flex-col items-center justify-center bg-gray-100">
       <div className="w-full max-w-4xl p-6 bg-white rounded-lg shadow-md">
         <div>
-          <h1 className="text-3xl font-bold mb-6">Exercise List</h1>
+        <button
+          className="bg-gray-500 hover:bg-gray-700 text-white rounded py-2 px-4 transition-colors duration-300 hover:text-black mt-4"
+          onClick={() => router.push('/Admin')}
+        >
+          Regresar a la página de inicio
+        </button>
+
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold py-2 mb-6">Exercise List</h1>
 
           {/* Mostrar mensaje si no hay ejercicios */}
           {exercises.length === 0 && (
@@ -270,7 +281,7 @@ export default function AddExercise() {
             onClick={openDraggableLetters}
           >
             <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
-              Organizar Letras
+              Organizar Palabras desde Letras
             </h3>
           </div>
         </div>

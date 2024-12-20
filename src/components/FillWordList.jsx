@@ -123,8 +123,8 @@ const DraggableWords = () => {
         />
       </div>
       <div className="mb-4">
-        <label className="block mb-2">Text to complete:</label>
-        <label className="block mb-2">El texto entre "[ ]" se usará para formar la oración:</label>
+        <label className="block mb-2">Texto a Completar:</label>
+        <label className="block mb-2">El texto entre "[ ]" se usará para formar la oracion:</label>
         <textarea
           value={textToComplete}
           onChange={handleTextChange}

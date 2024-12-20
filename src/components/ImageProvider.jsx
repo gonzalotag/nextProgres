@@ -40,12 +40,12 @@ export default function ImageProvider({ closeModal, onImageUpload }) { // Asegú
 
   return (
     <div className="mt-4">
-      <h2 className="text-2xl font-bold mb-4">Upload Image</h2>
+      <h2 className="text-2xl font-bold mb-4">Imagen EJercicio</h2>
 
       {/* Título */}
       <div className="mb-4">
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-          Title
+          Titulo
         </label>
         <input
           type="text"
@@ -95,17 +95,18 @@ export default function ImageProvider({ closeModal, onImageUpload }) { // Asegú
       {/* Botones */}
       <div className="flex justify-between mt-4">
         <button
-          onClick={handleCancel}
-          className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300"
-        >
-          Cancel
-        </button>
-        <button
           onClick={handleSaveImage}
           className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300"
         >
           Guardar
         </button>
+        <button
+          onClick={handleCancel}
+          className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300"
+        >
+          Cancelar
+        </button>
+        
       </div>
     </div>
   );

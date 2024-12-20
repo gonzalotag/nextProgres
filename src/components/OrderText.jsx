@@ -72,7 +72,7 @@ const DraggableText = () => {
           {droppedTexts[index] ? (
             <span className="text-gray-800">{droppedTexts[index]} - {feedback[index]}</span>
           ) : (
-            <span className="text-gray-400">Drop text here</span>
+            <span className="text-gray-400">Poner palabra aqui</span>
           )}
         </div>
       </div>
@@ -97,7 +97,7 @@ const DraggableText = () => {
   return (
     <div className="p-4">
       <div className="mb-4">
-        <label className="block mb-2">Title:</label>
+        <label className="block mb-2">Titulo:</label>
         <input
           type="text"
           value={title}
@@ -106,7 +106,7 @@ const DraggableText = () => {
         />
       </div>
       <div className="mb-4">
-        <label className="block mb-2">Text to complete:</label>
+        <label className="block mb-2">Texto a completar:</label>
         <label className="block mb-2">El texto entre "[ ]" se usara para formar la oracion:</label>
         <textarea
           value={textToComplete}
