@@ -86,14 +86,14 @@ export default function AddExercise() {
 
         </div>
         <div>
-          <h1 className="text-3xl font-bold py-2 mb-6">Exercise List</h1>
+          <h1 className="text-3xl font-bold py-2 mb-6">Lista de Ejercicios</h1>
 
           {/* Mostrar mensaje si no hay ejercicios */}
           {exercises.length === 0 && (
             <div className="flex flex-col items-center">
               <BookOpen className="h-16 w-16 text-gray-400" />
               <p className="mt-4 text-center text-gray-600">
-                There are no exercises in this section yet. Add an exercise.
+                No tienes ejercicios en esta seccion, desea agregar ejercicios.
               </p>
             </div>
           )}
@@ -134,7 +134,7 @@ export default function AddExercise() {
                   {/* Mostrar el reproductor de audio */}
                     <audio controls className="w-full mt-2">
                     <source src={URL.createObjectURL(exercise.audio)} type="audio/mpeg" />
-                    Your browser does not support the audio element.
+                    tu buscador no soporta este elemento.
                     </audio>
                   </div>
                   )}
@@ -171,7 +171,7 @@ export default function AddExercise() {
             onClick={openModal}
             className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300"
           >
-            Add Exercise
+            Agregar Ejercicio
           </button>
         </div>
       </div>
@@ -187,7 +187,7 @@ export default function AddExercise() {
             className="bg-white p-6 rounded-lg w-full max-w-[95%] sm:max-w-[80%] md:max-w-[60%] lg:max-w-[40%] max-h-[70vh] overflow-y-auto"
             ref={modalRef}
           >
-            <h2 className="text-2xl font-bold mb-4">Choose an Action</h2>
+            <h2 className="text-2xl font-bold mb-4">Escoje una accion</h2>
       {modalContent === '' && (
         <div className="grid grid-cols-2 gap-4 w-full ">
           
@@ -216,7 +216,7 @@ export default function AddExercise() {
             onClick={openFillInTheBlanks}
           >
             <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
-              Fill in the Blanks
+              Rellenar espacion en blanco
               <br />
             </h3>
           </div>
@@ -272,7 +272,7 @@ export default function AddExercise() {
             onClick={openDraggableWords}
           >
             <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
-              Fill with Words List
+              Rellenar con lista de palabras
             </h3>
           </div>
           <div
@@ -324,7 +324,7 @@ export default function AddExercise() {
               onClick={closeModal}
               className="flex items-center px-4 py-2 mt-3 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300"
             >
-              Close
+              Cerrar
             </button>
           </div>
         </div>

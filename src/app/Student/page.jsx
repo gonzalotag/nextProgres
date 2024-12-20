@@ -113,7 +113,7 @@ export default function VistaEstudiante() {
                     className="bg-[#FEAB5F] text-black rounded py-1 px-3 transition-colors duration-300 hover:bg-gray-700 hover:text-white"
                     onClick={() => handleStudentProfileClick(student.id)}
                   >
-                    Student Profile
+                    Perfil Estudiante
                   </button>
                   <button
                     className="bg-red-500 hover:bg-red-700 text-white rounded py-1 px-3 transition-colors duration-300 hover:text-black"
