@@ -1,118 +1,169 @@
-'use client';
-
+"use client";
 import React, { useState } from 'react';
 
-// Función para obtener las palabras entre corchetes y el texto del ejercicio
-const extractWords = (text) => {
-  if (!text) return []; // Si el texto está vacío o indefinido, devolver un array vacío
-  const parts = text.split(/(\[.*?\])/); // Dividir el texto por los corchetes
-  const words = [];
-  parts.forEach((part) => {
-    if (part.startsWith('[') && part.endsWith(']')) {
-      words.push(part.slice(1, -1)); // Extraer la palabra sin corchetes
-    }
-  });
-  return words;
-};
+const DraggableWords = () => {
+  const [title, setTitle] = useState("");
+  const [textToComplete, setTextToComplete] = useState("");
+  const [droppedTexts, setDroppedTexts] = useState([]);
+  const [correctWords, setCorrectWords] = useState([]);
+  const [feedback, setFeedback] = useState([]);
+  const [displayText, setDisplayText] = useState([]);
 
-export default function FillWordsList({ exerciseText, onSave, onClose }) {
-  const [fillInWords, setFillInWords] = useState({});
-  const [draggedWord, setDraggedWord] = useState(null);
-
-  // Manejar el inicio del drag (arrastre)
-  const handleDragStart = (word) => {
-    setDraggedWord(word);
+  const handleTextChange = (e) => {
+    const inputText = e.target.value;
+    setTextToComplete(inputText);
+    extractWords(inputText);
   };
 
-  // Manejar el drop (soltar) en el lugar de la palabra
+  const extractWords = (text) => {
+    const regex = /\[(.*?)\]/g;
+    const words = [];
+    const newDisplayText = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = regex.exec(text)) !== null) {
+      const word = match[1];
+      words.push(word);
+      
+      if (match.index > lastIndex) {
+        newDisplayText.push({ type: 'text', content: text.slice(lastIndex, match.index) });
+      }
+      
+      newDisplayText.push({ type: 'drop', index: words.length - 1 });
+      
+      lastIndex = match.index + match[0].length;
+    }
+    
+    if (lastIndex < text.length) {
+      newDisplayText.push({ type: 'text', content: text.slice(lastIndex) });
+    }
+
+    setDroppedTexts(Array(words.length).fill(""));
+    setCorrectWords(words);
+    setFeedback(Array(words.length).fill(null));
+    setDisplayText(newDisplayText);
+  };
+
+  const handleDragStart = (e, text) => {
+    e.dataTransfer.setData("text/plain", text);
+  };
+
   const handleDrop = (e, index) => {
     e.preventDefault();
-    const updatedWords = { ...fillInWords, [index]: draggedWord };
-    setFillInWords(updatedWords);
+    const text = e.dataTransfer.getData("text/plain");
+    if (text) {
+      const updatedTexts = [...droppedTexts];
+      updatedTexts[index] = text;
+      setDroppedTexts(updatedTexts);
+      checkAnswer(text, index);
+    }
   };
 
-  // Prevenir el comportamiento por defecto (para permitir el drop)
   const handleDragOver = (e) => {
     e.preventDefault();
   };
 
-  // Manejar el guardado
-  const handleSave = () => {
-    const updatedText = exerciseText.split(/(\[.*?\])/).map((part, index) => {
-      if (part.startsWith('[') && part.endsWith(']')) {
-        return `[${fillInWords[index] || ''}]`; // Reemplazar con la palabra arrastrada
-      }
-      return part;
-    }).join('');
-    onSave(updatedText); // Guardar el ejercicio
-    onClose();
+  const checkAnswer = (text, index) => {
+    if (text === correctWords[index]) {
+      setFeedback((prev) => {
+        const newFeedback = [...prev];
+        newFeedback[index] = "Correct!";
+        return newFeedback;
+      });
+    } else {
+      setFeedback((prev) => {
+        const newFeedback = [...prev];
+        newFeedback[index] = "Incorrect!";
+        return newFeedback;
+      });
+    }
   };
 
-  // Validación previa a la extracción de palabras
-  const words = extractWords(exerciseText || ''); // Asegurarse de que el texto no sea undefined
-  const parts = exerciseText ? exerciseText.split(/(\[.*?\])/): []; // Si exerciseText está definido, lo dividimos
+  const DroppableContainer = ({ index }) => {
+    return (
+      <div
+        className="border-dashed border-2 border-gray-300 p-2 w-32 h-10 flex items-center justify-center mx-1"
+        onDrop={(e) => handleDrop(e, index)}
+        onDragOver={handleDragOver}
+      >
+        {droppedTexts[index] ? (
+          <span className="text-gray-800 text-sm">{droppedTexts[index]} - {feedback[index]}</span>
+        ) : (
+          <span className="text-gray-400 text-sm">Drop here</span>
+        )}
+      </div>
+    );
+  };
+
+  const handleSave = () => {
+    console.log("Title:", title);
+    console.log("Text to complete:", textToComplete);
+    console.log("Dropped texts:", droppedTexts);
+  };
+
+  const handleCancel = () => {
+    setTitle("");
+    setTextToComplete("");
+    setDroppedTexts([]);
+    setCorrectWords([]);
+    setFeedback([]);
+    setDisplayText([]);
+  };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Fill Words Exercise</h2>
+    <div className="p-4">
+      <div className="mb-4">
+        <label className="block mb-2">Title:</label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="border rounded p-2 w-full"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block mb-2">Text to complete:</label>
+        <label className="block mb-2">El texto entre "[ ]" se usará para formar la oración:</label>
+        <textarea
+          value={textToComplete}
+          onChange={handleTextChange}
+          className="border rounded p-2 w-full h-24"
+        />
+      </div>
 
-        {/* Vista previa */}
-        <div className="mb-4 p-4 border border-gray-300 rounded-md">
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Exercise Preview:</h3>
-          <div className="text-gray-900">
-            {parts.map((part, index) => {
-              if (part.startsWith('[') && part.endsWith(']')) {
-                // Si es una palabra entre corchetes, la mostramos como una caja de drop
-                return (
-                  <span
-                    key={index}
-                    className="inline-block border border-gray-300 p-1 m-1 rounded-md bg-gray-100 cursor-pointer"
-                    onDrop={(e) => handleDrop(e, index)}
-                    onDragOver={handleDragOver}
-                  >
-                    {fillInWords[index] || '___'} {/* Mostrar la palabra arrastrada o espacio vacío */}
-                  </span>
-                );
-              }
-              return <span key={index}>{part}</span>; // Mostrar el texto normal
-            })}
-          </div>
+      <div className="mb-4">
+        <div className="flex flex-wrap gap-2 mb-4">
+          {correctWords.map((word, index) => (
+            <div
+              key={index}
+              className="cursor-pointer bg-blue-100 text-blue-600 px-4 py-2 rounded shadow hover:bg-blue-200"
+              draggable
+              onDragStart={(e) => handleDragStart(e, word)}
+            >
+              {word}
+            </div>
+          ))}
         </div>
 
-        {/* Palabras para arrastrar */}
-        <div className="mb-4">
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Drag and Drop Words:</h3>
-          <div className="flex flex-wrap gap-2">
-            {words.map((word, index) => (
-              <div
-                key={index}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md cursor-pointer"
-                draggable
-                onDragStart={() => handleDragStart(word)} // Iniciar el drag
-              >
-                {word}
-              </div>
-            ))}
-          </div>
+        <div className="border rounded p-4 flex flex-wrap items-center">
+          {displayText.map((item, index) => 
+            item.type === 'text' ? (
+              <span key={index} className="mr-1">{item.content}</span>
+            ) : (
+              <DroppableContainer key={index} index={item.index} />
+            )
+          )}
         </div>
+      </div>
 
-        {/* Botones de acción */}
-        <div className="flex justify-end space-x-2">
-          <button
-            onClick={handleSave}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-          >
-            Save
-          </button>
-          <button
-            onClick={onClose}
-            className="px-4 py-2 bg-[#FEAB5F] text-white rounded-md hover:bg-[#FE9B3F] transition-colors"
-          >
-            Cancel
-          </button>
-        </div>
+      <div className="flex space-x-4">
+        <button onClick={handleSave} className="bg-green-500 text-white px-4 py-2 rounded">Guardar</button>
+        <button onClick={handleCancel} className="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
       </div>
     </div>
   );
-}
+};
+
+export default DraggableWords;
+

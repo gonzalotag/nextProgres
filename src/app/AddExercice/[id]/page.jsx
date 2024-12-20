@@ -10,9 +10,8 @@ import OrderText from '@/components/OrderText';
 import SingleSelectQuestion from '@/components/SelectQuestions';
 import WordsAndImage from '@/components/WordsAndImage.jsx';
 import { WordMatchGame } from '@/components/OrderColumn';
-import FillWordsList from '@/components/FillWordList';
-
-
+import DraggableWords from '@/components/FillWordList';
+import DraggableLetters from '@/components/OrderWords';
 
 export default function AddExercise() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -69,7 +68,8 @@ export default function AddExercise() {
   const openDraggableText = () => setModalContent('orderText');
   const openSingleSelectQuestion = () => setModalContent('selectQuestion');
   const openDraggableimage = () => setModalContent('wordsAndImage');
-  const openFillWordsList = () => setModalContent('fillWordsList');
+  const openDraggableWords = () => setModalContent('fillWordsList');
+  const openDraggableLetters = () => setModalContent('orderWords');
 
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gray-100">
@@ -176,9 +176,7 @@ export default function AddExercise() {
             className="bg-white p-6 rounded-lg w-full max-w-[95%] sm:max-w-[80%] md:max-w-[60%] lg:max-w-[40%] max-h-[70vh] overflow-y-auto"
             ref={modalRef}
           >
-
             <h2 className="text-2xl font-bold mb-4">Choose an Action</h2>
-          
       {modalContent === '' && (
         <div className="grid grid-cols-2 gap-4 w-full ">
           
@@ -218,7 +216,7 @@ export default function AddExercise() {
             onClick={openDropdownParagraph}
           >
             <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
-              Complete Text
+              Seleccionar Para Completar
             </h3>
           </div>
           <div
@@ -227,7 +225,7 @@ export default function AddExercise() {
             onClick={openWordMatchGame}
           >
             <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
-              Order Column
+              Emparejar Columnas
             </h3>
           </div>
           <div
@@ -236,7 +234,7 @@ export default function AddExercise() {
             onClick={openDraggableText}
           >
             <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
-              Order Text
+              Organizar palabras
             </h3>
           </div>
           <div
@@ -245,7 +243,7 @@ export default function AddExercise() {
             onClick={openSingleSelectQuestion}
           >
             <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
-              Select Question
+              Ordenar Oraciones
             </h3>
           </div>
           <div
@@ -254,16 +252,25 @@ export default function AddExercise() {
             onClick={openDraggableimage}
           >
             <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
-              Word Image Match
+              Emparejar texto con Imagen
             </h3>
           </div>
           <div
             className="flex flex-col justify-end items-end p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-full aspect-square min-h-[150px] sm:min-h-[200px] md:min-h-[250px] lg:min-h-[300px] bg-no-repeat"
             style={{ backgroundImage: "url('/books.png')" }}
-            onClick={openFillWordsList}
+            onClick={openDraggableWords}
           >
             <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
               Fill with Words List
+            </h3>
+          </div>
+          <div
+            className="flex flex-col justify-end items-end p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-full aspect-square min-h-[150px] sm:min-h-[200px] md:min-h-[250px] lg:min-h-[300px] bg-no-repeat"
+            style={{ backgroundImage: "url('/books.png')" }}
+            onClick={openDraggableLetters}
+          >
+            <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
+              Organizar Letras
             </h3>
           </div>
         </div>
@@ -295,7 +302,10 @@ export default function AddExercise() {
               <WordsAndImage onClose={closeModal} onSave={handleExerciseAdd} />
             )}
             {modalContent === 'fillWordsList' && (
-              <FillWordsList onClose={closeModal} onSave={handleExerciseAdd} />
+              <DraggableWords onClose={closeModal} onSave={handleExerciseAdd} />
+            )}
+            {modalContent === 'orderWords' && (
+              <DraggableLetters onClose={closeModal} onSave={handleExerciseAdd} />
             )}
             
             {/* Botón para cerrar el modal */}

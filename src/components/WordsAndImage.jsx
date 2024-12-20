@@ -1,73 +1,3 @@
-// 'use client'
-
-// import React, { useState } from 'react';
-
-// const DraggableText = () => {
-//   const [draggedText, setDraggedText] = useState("");
-
-//   const handleDragStart = (e, text) => {
-//     e.dataTransfer.setData("text/plain", text);
-//     setDraggedText(text);
-//   };
-
-//   const handleDrop = (e, setDroppedText) => {
-//     e.preventDefault();
-//     const text = e.dataTransfer.getData("text/plain");
-//     if (text) setDroppedText(text);
-//   };
-
-//   const handleDragOver = (e) => {
-//     e.preventDefault();
-//   };
-
-//   const DroppableContainer = ({ imageSrc }) => {
-//     const [droppedText, setDroppedText] = useState("");
-
-//     return (
-//       <div className="border border-gray-400 rounded-lg p-4 flex flex-col items-center justify-center space-y-4 w-64 h-64">
-//         <div
-//           className="border-dashed border-2 border-gray-300 p-4 w-full h-24 flex items-center justify-center"
-//           onDrop={(e) => handleDrop(e, setDroppedText)}
-//           onDragOver={handleDragOver}
-//         >
-//           {droppedText ? (
-//             <span className="text-gray-800">{droppedText}</span>
-//           ) : (
-//             <span className="text-gray-400">Drop text here</span>
-//           )}
-//         </div>
-//         <img
-//           src={imageSrc}
-//           alt="Reference"
-//           className="w-16 h-16 object-cover rounded-full"
-//         />
-//       </div>
-//     );
-//   };
-
-//   return (
-//     <div className="flex space-x-8">
-//       {/* Draggable Texts */}
-//       <div className="flex flex-col space-y-4">
-//         {['Example Text 1', 'Example Text 2', 'Example Text 3'].map((text, index) => (
-//           <div
-//             key={index}
-//             className="cursor-pointer bg-blue-100 text-blue-600 px-4 py-2 rounded shadow hover:bg-blue-200"
-//             draggable
-//             onDragStart={(e) => handleDragStart(e, text)}
-//           >
-//             {text}
-//           </div>
-//         ))}
-//       </div>
-
-//       {/* Droppable Container */}
-//       <DroppableContainer imageSrc="https://via.placeholder.com/64" />
-//     </div>
-//   );
-// };
-
-// export default DraggableText;
 
 'use client';
 
@@ -160,6 +90,7 @@ const DraggableText = () => {
       </div>
 
       <div className="mb-4">
+      <label className="block mb-2">La imagen seleccionada debe ir con un texto para emparejar:</label>
         <label className="block mb-2">Upload Image:</label>
         <input
           type="file"
