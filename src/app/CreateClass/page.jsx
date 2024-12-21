@@ -67,7 +67,7 @@ export default function CreateClassPage() {
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div className="flex flex-col mb-4">
-              <label className="text-lg mb-2">Image:</label>
+              <label className="text-lg mb-2">Imagen:</label>
               <div className="flex items-center">
                 <input
                   type="file"
@@ -115,7 +115,7 @@ export default function CreateClassPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Número de estudiantes</label>
+              <label className="block text-sm font-medium text-gray-700">Numero de estudiantes</label>
               <input
                 type="number"
                 name="students"

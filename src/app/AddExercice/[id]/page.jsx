@@ -13,6 +13,8 @@ import WordsAndImage from '@/components/WordsAndImage.jsx';
 import { WordMatchGame } from '@/components/OrderColumn';
 import DraggableWords from '@/components/FillWordList';
 import DraggableLetters from '@/components/OrderWords';
+import ExternalLinkCard from '@/components/ExternalLink';
+import Notes from '@/components/Notes';
 
 export default function AddExercise() {
   const router = useRouter();
@@ -72,7 +74,13 @@ export default function AddExercise() {
   const openDraggableimage = () => setModalContent('wordsAndImage');
   const openDraggableWords = () => setModalContent('fillWordsList');
   const openDraggableLetters = () => setModalContent('orderWords');
+  const openExternalLinkCard = () => {
+    console.log('Abriendo enlace externo');
+    setModalContent('externalLink');
+    openModal();
+  };
 
+  const openNotes = () => setModalContent('notes');
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gray-100">
       <div className="w-full max-w-4xl p-6 bg-white rounded-lg shadow-md">
@@ -284,6 +292,24 @@ export default function AddExercise() {
               Organizar Palabras desde Letras
             </h3>
           </div>
+          <div
+            className="flex flex-col justify-end items-end p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-full aspect-square bg-no-repeat"
+            style={{ backgroundImage: "url('/books.png')" }}
+            onClick={openExternalLinkCard}
+          >
+            <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
+              Crear Tarjeta de Enlace Externo
+            </h3>
+          </div>
+          <div
+            className="flex flex-col justify-end items-end p-4 border rounded-lg hover:shadow-lg bg-cover bg-center w-full aspect-square bg-no-repeat"
+            style={{ backgroundImage: "url('/books.png')" }}
+            onClick={openNotes}
+          >
+            <h3 className="text-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300 w-full">
+              Crear Nota
+            </h3>
+          </div>
         </div>
       )}
 
@@ -317,6 +343,14 @@ export default function AddExercise() {
             )}
             {modalContent === 'orderWords' && (
               <DraggableLetters onClose={closeModal} onSave={handleExerciseAdd} />
+            )}
+            {modalContent === 'externalLink' && (
+              <>
+                <ExternalLinkCard onClose={closeModal} onSave={handleExerciseAdd} />
+              </>
+            )}
+            {modalContent === 'notes' && (
+              <Notes onClose={closeModal} onSave={handleExerciseAdd} />
             )}
             
             {/* Botón para cerrar el modal */}

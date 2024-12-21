@@ -22,7 +22,7 @@ const DroppableContainer = ({ index, onDrop, droppedLetters, feedback }) => {
             )}
           </div>
         ) : (
-          <span className="text-gray-400 text-sm">Drop here</span>
+          <span className="text-gray-400 text-sm">Arrastrar aqui</span>
         )}
       </div>
     </div>

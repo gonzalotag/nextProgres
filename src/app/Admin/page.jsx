@@ -130,7 +130,7 @@ export default function Dashboard() {
               className="bg-white shadow-md rounded-lg p-6"
               onClick={() => handleNavigation('/Student')}
             >
-              <span className="text-sm">Total Students</span>
+              <span className="text-sm">Total Estudiantes</span>
               <Users className="h-5 w-5 mr-2" />
             </button>
         </section>
