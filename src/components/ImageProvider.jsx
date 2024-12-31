@@ -2,8 +2,13 @@
 
 import React, { useState, useContext } from 'react';
 import { ImageContext } from '@/contexts/ImageContext';
+import { InputTemplate } from '@/templates/InputTemplate';
+import TextAreaTemplate from '@/templates/TextAreaTemplate';
+import Button from '@/templates/Button';
+import { CardTemplate } from '@/templates/CardTemplate';
+import Label from '@/templates/Labels';
 
-export default function ImageProvider({ closeModal, onImageUpload }) { // Asegúrate de incluir onImageUpload como prop
+export default function ImageProvider({ closeModal, onImageUpload }) {
   const { addImage } = useContext(ImageContext);
   const [image, setImage] = useState(null);
   const [title, setTitle] = useState('');
@@ -24,7 +29,7 @@ export default function ImageProvider({ closeModal, onImageUpload }) { // Asegú
         description: description || 'Sin descripción',
       };
       addImage(newImage); // Si estás usando el contexto
-      onImageUpload(newImage); // Pasamos el ejercicio al componente padre
+      onImageUpload(newImage); // Pasamos la imagen al componente padre
       closeModal();
     } else {
       alert('Por favor, ingrese un título y seleccione una imagen.');
@@ -39,75 +44,68 @@ export default function ImageProvider({ closeModal, onImageUpload }) { // Asegú
   };
 
   return (
-    <div className="mt-4">
-      <h2 className="text-2xl font-bold mb-4">Imagen EJercicio</h2>
+    <CardTemplate className="max-w-md mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-4">Imagen Ejercicio</h2>
 
       {/* Título */}
       <div className="mb-4">
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-          Titulo
-        </label>
-        <input
-          type="text"
+        <Label htmlFor="title">Título:</Label>
+        <InputTemplate
           id="title"
+          name="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-          placeholder="Enter image title"
+          placeholder="Ingrese el título de la imagen"
         />
       </div>
 
       {/* Selector de imagen */}
-      <label
-        htmlFor="file-upload"
-        className="flex items-center justify-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md cursor-pointer hover:bg-gray-900 hover:text-white transition duration-300"
-      >
-        <span>Subir Imagen</span>
-      </label>
-      <input
-        id="file-upload"
-        type="file"
-        onChange={handleImageUpload}
-        className="hidden"
-      />
+      <div className="mb-4">
+        <label
+          htmlFor="file-upload"
+          className="flex items-center justify-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md cursor-pointer hover:bg-gray-900 hover:text-white transition duration-300"
+        >
+          <span>Subir Imagen</span>
+        </label>
+        <input
+          id="file-upload"
+          type="file"
+          onChange={handleImageUpload}
+          className="hidden"
+        />
+      </div>
 
       {/* Imagen seleccionada */}
       {image && (
         <div className="mt-4">
-          <img src={image} alt="Selected" className="w-full h-40 object-cover rounded-lg" />
+          <img
+            src={image}
+            alt="Imagen seleccionada"
+            className="w-full h-40 object-cover rounded-lg"
+          />
         </div>
       )}
 
       {/* Descripción */}
       <div className="mb-4 mt-4">
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-          Description
-        </label>
-        <textarea
+        <Label htmlFor="description">Descripción:</Label>
+        <TextAreaTemplate
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-          placeholder="Enter image description"
+          placeholder="Ingrese una descripción"
         />
       </div>
 
       {/* Botones */}
       <div className="flex justify-between mt-4">
-        <button
-          onClick={handleSaveImage}
-          className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300"
-        >
+        <Button onClick={handleSaveImage} variant="primary">
           Guardar
-        </button>
-        <button
-          onClick={handleCancel}
-          className="flex items-center px-4 py-2 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300"
-        >
+        </Button>
+        <Button onClick={handleCancel} variant="secondary">
           Cancelar
-        </button>
-        
+        </Button>
       </div>
-    </div>
+    </CardTemplate>
   );
 }

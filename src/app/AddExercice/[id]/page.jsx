@@ -19,43 +19,41 @@ import Notes from '@/components/Notes';
 export default function AddExercise() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState(''); // Contenido dinámico del modal
-  const [exercises, setExercises] = useState([]); // Lista de 
+  const [modalContent, setModalContent] = useState(''); 
+  const [exercises, setExercises] = useState([]); 
   const [userAnswers, setUserAnswers] = useState({});
-   // Referencia al modal
+   
   const modalRef = useRef(null);
 
   useEffect(() => {
     const modalState = localStorage.getItem('isModalOpen');
     if (modalState === 'true') {
-      setIsModalOpen(true); // Mantener el modal abierto si está guardado en el localStorage
+      setIsModalOpen(true);
     }
   }, []);
-  // Abrir el modal
+  
   const openModal = () => {
     setIsModalOpen(true);
-    localStorage.setItem('isModalOpen', 'true'); // Guardar el estado del modal abierto en localStorage
+    localStorage.setItem('isModalOpen', 'true');
   };
-  // Cerrar el modal
+  
   const closeModal = () => {
     setIsModalOpen(false);
     setModalContent('');
   };
 
   const handleOverlayClick = (e) => {
-    // Cierra el modal si el clic ocurre fuera del contenedor del modal
     if (modalRef.current && !modalRef.current.contains(e.target)) {
       closeModal();
     }
   };
 
-  // Agregar ejercicio a la lista
   const handleExerciseAdd = (newExercise) => {
     setExercises((prevExercises) => [...prevExercises, newExercise]);
-    closeModal(); // Cierra el modal después de guardar
+    closeModal();
   };
 
-  // Manejar cambios en los inputs
+  
   const handleInputChange = (index, value) => {
     setUserAnswers((prev) => ({
       ...prev,
@@ -63,7 +61,6 @@ export default function AddExercise() {
     }));
   };
 
-  // Opciones para abrir modales específicos
   const openImageProvider = () => setModalContent('imageProvider');
   const openAudioProvider = () => setModalContent('audioProvider');
   const openFillInTheBlanks = () => setModalContent('fillInTheBlanks');
@@ -96,7 +93,6 @@ export default function AddExercise() {
         <div>
           <h1 className="text-3xl font-bold py-2 mb-6">Lista de Ejercicios</h1>
 
-          {/* Mostrar mensaje si no hay ejercicios */}
           {exercises.length === 0 && (
             <div className="flex flex-col items-center">
               <BookOpen className="h-16 w-16 text-gray-400" />
@@ -106,7 +102,6 @@ export default function AddExercise() {
             </div>
           )}
 
-          {/* Mostrar ejercicios agregados */}
           {exercises.length > 0 && (
             <div className="grid grid-cols-1  gap-4 mt-4">
               {exercises.map((exercise, index) => (
@@ -129,17 +124,15 @@ export default function AddExercise() {
                   
                   {exercise.audio && (
                     <div className="p-4 border rounded-lg shadow-md">
-                  {/* Mostrar el título del audio */}
+                  
                   {exercise.nombre && (
                     <h3 className="text-xl font-semibold text-gray-800">{exercise.nombre}</h3>
                   )}
 
-                  {/* Mostrar la descripción del audio */}
                   {exercise.description && (
                     <p className="mt-2 text-sm text-gray-600">{exercise.description}</p>
                   )}
-
-                  {/* Mostrar el reproductor de audio */}
+                  
                     <audio controls className="w-full mt-2">
                     <source src={URL.createObjectURL(exercise.audio)} type="audio/mpeg" />
                     tu buscador no soporta este elemento.
@@ -148,7 +141,7 @@ export default function AddExercise() {
                   )}
                   
                   {exercise.nombre && (
-                    <h3 className="text-xl font-semibold text-gray-800 mb-4">{exercise.nombre}</h3> // Mostrar el título
+                    <h3 className="text-xl font-semibold text-gray-800 mb-4">{exercise.nombre}</h3> 
                   )}
 
                   {exercise.textoEjercicio &&
@@ -160,8 +153,8 @@ export default function AddExercise() {
                       type="text"
                       className="border-b border-gray-300 focus:border-[#FEAB5F] outline-none px-1 w-20 inline-block"
                       placeholder="Completar"
-                      value={userAnswers[idx] || ''} // Vinculado al estado
-                      onChange={(e) => handleInputChange(idx, e.target.value)} // Actualiza el estado
+                      value={userAnswers[idx] || ''} 
+                      onChange={(e) => handleInputChange(idx, e.target.value)}
                     />
                     );
                   }
@@ -173,7 +166,6 @@ export default function AddExercise() {
           )}
         </div>
 
-        {/* Botón para abrir el modal */}
         <div className="flex justify-center mt-6">
           <button
             onClick={openModal}
@@ -184,12 +176,11 @@ export default function AddExercise() {
         </div>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         
         <div
           className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
-          onClick={handleOverlayClick} // Detecta clics en el overlay
+          onClick={handleOverlayClick}
         >
           <div
             className="bg-white p-6 rounded-lg w-full max-w-[95%] sm:max-w-[80%] md:max-w-[60%] lg:max-w-[40%] max-h-[70vh] overflow-y-auto"
@@ -313,7 +304,6 @@ export default function AddExercise() {
         </div>
       )}
 
-            {/* Contenido dinámico del modal */}
             {modalContent === 'imageProvider' && (
               <ImageProvider closeModal={closeModal} onImageUpload={handleExerciseAdd} />
             )}
@@ -353,7 +343,6 @@ export default function AddExercise() {
               <Notes onClose={closeModal} onSave={handleExerciseAdd} />
             )}
             
-            {/* Botón para cerrar el modal */}
             <button
               onClick={closeModal}
               className="flex items-center px-4 py-2 mt-3 bg-[#FEAB5F] text-gray-900 rounded-md hover:bg-gray-900 hover:text-white transition duration-300"

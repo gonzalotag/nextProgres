@@ -1,6 +1,11 @@
 'use client'
 
 import { useState } from "react";
+import InputTemplate  from '@/templates/InputTemplate'
+import TextAreaTemplate from '@/templates/TextAreaTemplate'
+import Button from '@/templates/Button'
+import { CardTemplate } from '@/templates/CardTemplate'
+import Label from '@/templates/Labels'
 
 const ExternalLinkCard = ({ onSave, onCancel }) => {
   const [cardData, setCardData] = useState({
@@ -34,29 +39,24 @@ const ExternalLinkCard = ({ onSave, onCancel }) => {
   };
 
   return (
-    <div className="font-sans max-w-md mx-auto p-6">
+    <CardTemplate className="max-w-md mx-auto p-6">
       <h2 className="text-2xl font-bold text-center mb-6">Crear Tarjeta de Enlace Externo</h2>
+
       {/* Formulario */}
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
-          Título:
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        <Label htmlFor="title">Título:</Label>
+        <InputTemplate
           id="title"
-          type="text"
           name="title"
           value={cardData.title}
           onChange={handleInputChange}
           placeholder="Ingrese el título"
         />
       </div>
+
       <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
-          Descripción:
-        </label>
-        <textarea
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        <Label htmlFor="description">Descripción:</Label>
+        <TextAreaTemplate
           id="description"
           name="description"
           value={cardData.description}
@@ -65,33 +65,28 @@ const ExternalLinkCard = ({ onSave, onCancel }) => {
           rows="3"
         />
       </div>
+
       <div className="mb-6">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="url">
-          URL Externa:
-        </label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        <Label htmlFor="url">URL Externa:</Label>
+        <InputTemplate
           id="url"
-          type="url"
           name="url"
+          type="url"
           value={cardData.url}
           onChange={handleInputChange}
           placeholder="https://ejemplo.com"
         />
       </div>
-      <button
-        onClick={handleSave}
-        className="w-full bg-[#FEAB5F] text-white rounded py-2 px-4 mt-4 hover:bg-gray-900 hover:text-white transition duration-300"
-      >
-        Guardar
-      </button>
-      <button
-        onClick={handleCancel}
-        className="w-full bg-gray-300 text-gray-700 rounded py-2 px-4 mt-4 hover:bg-gray-900 hover:text-white transition duration-300"
-      >
-        Cancelar
-      </button>
-    </div>
+
+      <div className="space-y-4">
+        <Button onClick={handleSave} variant="primary">
+          Guardar
+        </Button>
+        <Button onClick={handleCancel} variant="secondary">
+          Cancelar
+        </Button>
+      </div>
+    </CardTemplate>
   );
 };
 

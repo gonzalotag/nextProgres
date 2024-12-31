@@ -6,13 +6,13 @@ import PerfilEstudiante from '@/components/StudentPerfil';
 
 export default function StudentProfilePage() {
   const router = useRouter();
-  const params = useParams(); // Utiliza useParams para obtener los parámetros dinámicos
-  const { id } = params; // Desempaqueta `id` del objeto `params`
+  const params = useParams();
+  const { id } = params; 
 
   return (
     <PerfilEstudiante
       studentId={id}
-      onBack={() => router.push('/Student')} // Redirige a la lista de estudiantes
+      onBack={() => router.push('/Student')} 
     />
   );
 }

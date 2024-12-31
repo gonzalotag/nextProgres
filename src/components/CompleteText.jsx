@@ -1,6 +1,11 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import Button from '@/templates/Button'
+import { CardTemplate } from '@/templates/CardTemplate'
+import { InputTemplate } from '@/templates/InputTemplate'
+import TextAreaTemplate from '@/templates/TextAreaTemplate'
+import Label from '@/templates/Labels'
 
 const ExerciseCreator = () => {
   const [title, setTitle] = useState('')
@@ -37,30 +42,26 @@ const ExerciseCreator = () => {
   }
 
   const handleSave = () => {
-    // Implement save functionality here
+    
     console.log('Saving exercise:', { title, exerciseText })
   }
 
   const handleCancel = () => {
-    // Implement cancel functionality here
+    
     setTitle('')
     setExerciseText('')
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <CardTemplate className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-4">Creador de Ejercicios</h1>
-      
+
       <div className="mb-4">
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-          Título:
-        </label>
-        <input
-          type="text"
-          id="title"
+        <Label htmlFor="title">Título:</Label>
+        <InputTemplate
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full"
           placeholder="Ingrese el título del ejercicio"
         />
       </div>
@@ -72,16 +73,13 @@ const ExerciseCreator = () => {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="exerciseText" className="block text-sm font-medium text-gray-700 mb-1">
-          Texto del ejercicio:
-        </label>
-        <textarea
+        <Label htmlFor="exerciseText">Texto del ejercicio:</Label>
+        <TextAreaTemplate
           id="exerciseText"
           value={exerciseText}
           onChange={(e) => setExerciseText(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          rows={5}
           placeholder="Ingrese el texto del ejercicio. Use [palabra1/palabra2] para crear selecciones."
+          rows={5}
         />
       </div>
 
@@ -91,22 +89,13 @@ const ExerciseCreator = () => {
       </div>
 
       <div className="flex justify-end space-x-4">
-        <button
-          onClick={handleCancel}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
+        <Button onClick={handleSave}>Guardar</Button>
+        <Button onClick={handleCancel} variant="secondary">
           Cancelar
-        </button>
-        <button
-          onClick={handleSave}
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          Guardar
-        </button>
+        </Button>
       </div>
-    </div>
+    </CardTemplate>
   )
 }
 
 export default ExerciseCreator
-

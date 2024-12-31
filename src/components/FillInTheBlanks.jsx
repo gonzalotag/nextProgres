@@ -1,75 +1,73 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-
-// Función para parsear el texto del ejercicio y mostrar inputs en los lugares correspondientes
+import React, { useState } from 'react';
 import { CheckCircle, XCircle } from 'lucide-react';
+import LabelTemplate from '@/templates/Labels';
+import ButtonTemplate from '@/templates/ButtonTemplate';
+import InputTemplate from '@/templates/InputTemplate';
+import TextAreaTemplate from '@/templates/TextAreaTemplate';
+import CardTemplate from '@/templates/CardTemplate';
 
 const parseExerciseText = (exerciseText, fillInWords, handleInputChange, errors) => {
-  const parts = exerciseText.split(/(\[.*?\])/); // Dividir el texto por los corchetes
+  const parts = exerciseText.split(/(\[.*?\])/);
   return parts.map((part, index) => {
     if (part.startsWith('[') && part.endsWith(']')) {
-      const word = part.slice(1, -1); // Extraer palabra sin corchetes
-      const isError = errors[index]; // Si hay error, marcamos
+      const word = part.slice(1, -1);
+      const isError = errors[index];
       return (
         <div key={index} className="flex items-center space-x-2">
-          <input
+          <InputTemplate
             type="text"
-            className={`border-b border-gray-300 focus:border-[#FEAB5F] outline-none px-1 w-20 inline-block ${isError ? 'border-red-500' : ''}`}
-            placeholder={`${word}`} // Agregar el atajo dentro del placeholder
+            className={`w-20 inline-block ${isError ? 'border-red-500' : ''}`}
+            placeholder={word}
             value={fillInWords[index] || ''}
             onChange={(e) => handleInputChange(index, e.target.value)}
           />
-          {/* Usando iconos de Lucide */}
           {isError ? (
-            <XCircle className="h-5 w-5 text-red-500" /> // Icono de error (X)
+            <XCircle className="h-5 w-5 text-red-500" />
           ) : fillInWords[index] ? (
-            <CheckCircle className="h-5 w-5 text-green-500" /> // Icono de éxito (Check)
+            <CheckCircle className="h-5 w-5 text-green-500" />
           ) : null}
         </div>
       );
     }
-    return <span key={index}>{part}</span>; // Mostrar el texto normal
+    return <span key={index}>{part}</span>;
   });
 };
 
-
 export default function FillInTheBlanksModal({ isOpen, onClose, onSave }) {
-  const [task, setTask] = useState('');  // Título del ejercicio
-  const [exerciseText, setExerciseText] = useState(''); // Texto del ejercicio
-  const [fillInWords, setFillInWords] = useState({}); // Almacenar palabras a completar
-  const [errors, setErrors] = useState({}); // Para gestionar los errores de las respuestas
+  const [task, setTask] = useState('');
+  const [exerciseText, setExerciseText] = useState('');
+  const [fillInWords, setFillInWords] = useState({});
+  const [errors, setErrors] = useState({});
 
-  // Manejar cambios en los inputs de los campos de texto a completar
   const handleInputChange = (index, value) => {
     setFillInWords((prev) => ({ ...prev, [index]: value }));
   };
 
-  // Verificar si las respuestas son correctas
   const validateAnswers = () => {
     const parts = exerciseText.split(/(\[.*?\])/);
     let newErrors = {};
 
     parts.forEach((part, index) => {
       if (part.startsWith('[') && part.endsWith(']')) {
-        const word = part.slice(1, -1); // Palabra original entre corchetes
+        const word = part.slice(1, -1);
         if (fillInWords[index] && fillInWords[index].toLowerCase() !== word.toLowerCase()) {
-          newErrors[index] = 'incorrect'; // Marcar como incorrecta
+          newErrors[index] = 'incorrect';
         }
       }
     });
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Si no hay errores, es correcto
+    return Object.keys(newErrors).length === 0;
   };
 
-  // Guardar el ejercicio
   const handleSave = () => {
-    const isValid = validateAnswers(); // Verificar las respuestas
+    const isValid = validateAnswers();
 
     if (isValid && task && exerciseText) {
       const filledText = exerciseText.replace(/\[.*?\]/g, (_, idx) => {
-        return `[${fillInWords[idx] || ''}]`; // Reemplazar el texto de los corchetes
+        return `[${fillInWords[idx] || ''}]`;
       });
 
       onSave({ nombre: task, textoEjercicio: filledText });
@@ -83,66 +81,59 @@ export default function FillInTheBlanksModal({ isOpen, onClose, onSave }) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
+      <CardTemplate className="w-full max-w-2xl">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">Rellenar Espacios</h2>
 
-        {/* Campo para el título de la tarea */}
         <div className="mb-4">
-          <label htmlFor="task" className="block text-lg font-medium text-gray-900 mb-1">
+          <LabelTemplate htmlFor="task" className="text-lg font-medium text-gray-900 mb-1">
             Task
-          </label>
-          <input
-            type="text"
+          </LabelTemplate>
+          <InputTemplate
             id="task"
-            className="w-full p-2 border border-gray-300 rounded-md text-gray-900"
+            className="w-full"
             value={task}
             onChange={(e) => setTask(e.target.value)}
             placeholder="Enter task description"
           />
         </div>
 
-        {/* Campo para el texto del ejercicio */}
         <div className="mb-4">
-          <label htmlFor="exercise-text" className="block text-lg font-medium text-gray-900 mb-1">
+          <LabelTemplate htmlFor="exercise-text" className="text-lg font-medium text-gray-900 mb-1">
             Texto para el ejercicio
             <br />
             Ingresa el texto. Usa [ ] para las palabras a rellenar.
-          </label>
-          <textarea
+          </LabelTemplate>
+          <TextAreaTemplate
             id="exercise-text"
-            className="w-full p-2 border border-gray-300 rounded-md text-gray-900 h-32"
+            className="h-32"
             value={exerciseText}
             onChange={(e) => setExerciseText(e.target.value)}
           />
         </div>
 
-          {/* Vista previa del ejercicio */}
         <div className="mb-4 p-4 border border-gray-300 rounded-md">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Vista Previa:</h3>
-          {/* Mostrar el título y el texto con los campos de autocompletar */}
-            {task && <h4 className="text-xl font-semibold text-gray-800 mb-2">{task}</h4>}
-
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Vista Previa:</h3>
+          {task && <h4 className="text-xl font-semibold text-gray-800 mb-2">{task}</h4>}
           <div className="text-gray-900 flex flex-wrap">
             {parseExerciseText(exerciseText, fillInWords, handleInputChange, errors)}
           </div>
         </div>
 
-        {/* Botones de acción */}
         <div className="flex justify-end space-x-2">
-          <button
+          <ButtonTemplate
             onClick={handleSave}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            className="bg-blue-600 text-white hover:bg-blue-700"
           >
             Guardar
-          </button>
-          <button
+          </ButtonTemplate>
+          <ButtonTemplate
             onClick={onClose}
-            className="px-4 py-2 bg-[#FEAB5F] text-white rounded-md hover:bg-[#FE9B3F] transition-colors"
+            className="bg-[#FEAB5F] text-white hover:bg-[#FE9B3F]"
           >
             Cancelar
-          </button>
+          </ButtonTemplate>
         </div>
-      </div>
+      </CardTemplate>
     </div>
   );
 }

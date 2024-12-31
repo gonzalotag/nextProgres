@@ -1,12 +1,16 @@
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import { Circle } from 'lucide-react'
+import React, { useState } from 'react';
+import { Circle } from 'lucide-react';
+import { InputTemplate } from '@/templates/InputTemplate';
+import TextAreaTemplate from '@/templates/TextAreaTemplate';
+import Button from '@/templates/Button';
+import Label from '@/templates/Labels';
 
 const Notes = () => {
-  const [title, setTitle] = useState('')
-  const [message, setMessage] = useState('')
-  const [selectedColor, setSelectedColor] = useState('blue')
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
+  const [selectedColor, setSelectedColor] = useState('blue');
 
   const colors = [
     { name: 'blue', bg: '#E3F2FD', text: '#1565C0' },
@@ -14,41 +18,37 @@ const Notes = () => {
     { name: 'green', bg: '#E8F5E9', text: '#2E7D32' },
     { name: 'red', bg: '#FFEBEE', text: '#C62828' },
     { name: 'gray', bg: '#F5F5F5', text: '#424242' }
-  ]
+  ];
 
   const handleSave = () => {
-    // Aquí puedes implementar la lógica para guardar la nota
-    console.log('Guardando nota:', { title, message, color: selectedColor })
-    // Puedes agregar aquí la lógica para enviar los datos a un servidor o guardarlos localmente
-  }
+    // Lógica para guardar la nota
+    console.log('Guardando nota:', { title, message, color: selectedColor });
+  };
 
   const handleCancel = () => {
-    // Aquí puedes implementar la lógica para cancelar y limpiar el formulario
-    setTitle('')
-    setMessage('')
-    setSelectedColor('blue')
-  }
+    // Lógica para cancelar y limpiar el formulario
+    setTitle('');
+    setMessage('');
+    setSelectedColor('blue');
+  };
 
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-6">
       <div className="space-y-4">
+        {/* Título */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Título:
-          </label>
-          <input
-            type="text"
+          <Label htmlFor="title">Título:</Label>
+          <InputTemplate
+            id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Ingresa un título"
           />
         </div>
 
+        {/* Selección de color */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Color:
-          </label>
+          <Label htmlFor="color">Color:</Label>
           <div className="flex space-x-4">
             {colors.map((color) => (
               <button
@@ -59,37 +59,31 @@ const Notes = () => {
                 }`}
                 style={{ backgroundColor: color.bg }}
               >
-                <Circle
-                  size={20}
-                  fill={color.text}
-                  color={color.text}
-                />
+                <Circle size={20} fill={color.text} color={color.text} />
               </button>
             ))}
           </div>
         </div>
 
+        {/* Mensaje de texto */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Mensaje de texto:
-          </label>
-          <textarea
+          <Label htmlFor="message">Mensaje de texto:</Label>
+          <TextAreaTemplate
+            id="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
             placeholder="Ingresa tu mensaje"
           />
         </div>
 
+        {/* Vista previa */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Vista previa:
-          </label>
+          <Label>Vista previa:</Label>
           <div
             className="p-4 rounded-lg"
             style={{
-              backgroundColor: colors.find(c => c.name === selectedColor)?.bg,
-              color: colors.find(c => c.name === selectedColor)?.text
+              backgroundColor: colors.find((c) => c.name === selectedColor)?.bg,
+              color: colors.find((c) => c.name === selectedColor)?.text
             }}
           >
             <h3 className="text-lg font-semibold mb-2">{title || 'Sin título'}</h3>
@@ -97,25 +91,18 @@ const Notes = () => {
           </div>
         </div>
 
+        {/* Botones */}
         <div className="flex justify-end space-x-4">
-          <button
-            onClick={handleSave}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
+          <Button onClick={handleSave} variant="primary">
             Guardar
-          </button> 
-          <button
-            onClick={handleCancel}
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500"
-          >
+          </Button>
+          <Button onClick={handleCancel} variant="secondary">
             Cancelar
-          </button>
-          
+          </Button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Notes
-
+export default Notes;

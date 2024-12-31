@@ -1,6 +1,9 @@
-
 "use client";
 import React, { useState } from 'react';
+import { InputTemplate } from '@/templates/InputTemplate';
+import Button from '@/templates/Button';
+import Label from '@/templates/Labels';
+
 
 const DraggableText = () => {
   const [title, setTitle] = useState("");
@@ -61,26 +64,24 @@ const DraggableText = () => {
     }
   };
 
-  const DroppableContainer = ({ index }) => {
-    return (
-      <div className="rounded-lg p-4 flex flex-col items-center justify-center space-y-4 w-64 h-64">
-        <div
-          className="border-dashed border-2 border-gray-300 p-4 w-full h-24 flex items-center justify-center"
-          onDrop={(e) => handleDrop(e, index)}
-          onDragOver={handleDragOver}
-        >
-          {droppedTexts[index] ? (
-            <span className="text-gray-800">{droppedTexts[index]} - {feedback[index]}</span>
-          ) : (
-            <span className="text-gray-400">Poner palabra aqui</span>
-          )}
-        </div>
+  const DroppableContainer = ({ index }) => (
+    <div className="rounded-lg p-4 flex flex-col items-center justify-center space-y-4 w-64 h-64">
+      <div
+        className="border-dashed border-2 border-gray-300 p-4 w-full h-24 flex items-center justify-center"
+        onDrop={(e) => handleDrop(e, index)}
+        onDragOver={handleDragOver}
+      >
+        {droppedTexts[index] ? (
+          <span className="text-gray-800">{droppedTexts[index]} - {feedback[index]}</span>
+        ) : (
+          <span className="text-gray-400">Poner palabra aquí</span>
+        )}
       </div>
-    );
-  };
+    </div>
+  );
 
   const handleSave = () => {
-    // Implement save logic here
+    // Implementar la lógica de guardado aquí
     console.log("Title:", title);
     console.log("Text to complete:", textToComplete);
     console.log("Dropped texts:", droppedTexts);
@@ -97,17 +98,19 @@ const DraggableText = () => {
   return (
     <div className="p-4">
       <div className="mb-4">
-        <label className="block mb-2">Titulo:</label>
-        <input
-          type="text"
+        <Label htmlFor="title">Título:</Label>
+        <InputTemplate
+          id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="border rounded p-2 w-full"
+          placeholder="Ingrese título de ejercicio"
         />
       </div>
       <div className="mb-4">
-        <label className="block mb-2">Texto a completar:</label>
-        <label className="block mb-2">El texto entre "[ ]" se usara para formar la oracion:</label>
+        <Label htmlFor="textToComplete">Texto a completar:</Label>
+        <label className="block mb-2">
+          El texto entre "[ ]" se usará para formar la oración:
+        </label>
         <textarea
           value={textToComplete}
           onChange={handleTextChange}
@@ -126,7 +129,7 @@ const DraggableText = () => {
               onDragStart={(e) => handleDragStart(e, word)}
             >
               {word}
-            </ div>
+            </div>
           ))}
         </div>
 
@@ -139,8 +142,12 @@ const DraggableText = () => {
       </div>
 
       <div className="flex space-x-4">
-        <button onClick={handleSave} className="bg-green-500 text-white px-4 py-2 rounded">Guardar</button>
-        <button onClick={handleCancel} className="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
+        <Button onClick={handleSave} variant="primary">
+          Guardar
+        </Button>
+        <Button onClick={handleCancel} variant="secondary">
+          Cancelar
+        </Button>
       </div>
     </div>
   );

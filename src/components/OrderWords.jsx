@@ -1,7 +1,10 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
-import DroppableContainer from './DroppableContainer';
-import DraggableLetter from './DraggableLetter';
+import { InputTemplate } from '@/templates/InputTemplate';
+import Button from '@/templates/Button';
+import Label from '@/templates/Labels';
+import DroppableContainer from '@/components/DroppableContainer';
+import DraggableLetter from '@/components/DraggableLetter';
 import { shuffleArray } from '../utils/ArrayUtils';
 
 const DraggableLetters = () => {
@@ -61,33 +64,33 @@ const DraggableLetters = () => {
 
   return (
     <div className="p-8 max-w-4xl mx-auto bg-white rounded-xl shadow-lg">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">juego de arrastrar y soltar letras</h2>
-      
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">
+        Juego de arrastrar y soltar letras
+      </h2>
+
       <div className="space-y-6">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Titulo:</label>
-          <input
-            type="text"
+        <div>
+          <Label htmlFor="title">Título:</Label>
+          <InputTemplate
+            id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter activity title"
+            placeholder="Ingrese título de la actividad"
           />
         </div>
 
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Palabra a formar:</label>
-          <input
-            type="text"
+        <div>
+          <Label htmlFor="word">Palabra a formar:</Label>
+          <InputTemplate
+            id="word"
             value={word}
             onChange={handleWordChange}
-            className="border rounded-md p-2 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter a word (letters only)"
+            placeholder="Ingrese una palabra (solo letras)"
           />
         </div>
 
         <div className="flex flex-col space-y-8 md:flex-row md:space-y-0 md:space-x-8">
-          {/* Draggable Letters */}
+          {/* Letras arrastrables */}
           <div className="flex flex-wrap gap-4">
             {shuffledLetters.map((letter, index) => (
               <DraggableLetter
@@ -98,7 +101,7 @@ const DraggableLetters = () => {
             ))}
           </div>
 
-          {/* Droppable Containers */}
+          {/* Contenedores para soltar */}
           <div className="flex flex-wrap gap-4">
             {word && Array.from({ length: word.length }).map((_, index) => (
               <DroppableContainer
@@ -113,22 +116,12 @@ const DraggableLetters = () => {
         </div>
 
         <div className="flex space-x-4 pt-4">
-          <button 
-            onClick={handleSave}
-            className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 
-                     transition-colors duration-200 focus:outline-none focus:ring-2 
-                     focus:ring-green-500 focus:ring-offset-2"
-          >
+          <Button onClick={handleSave} variant="primary">
             Guardar
-          </button>
-          <button 
-            onClick={handleCancel}
-            className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600 
-                     transition-colors duration-200 focus:outline-none focus:ring-2 
-                     focus:ring-red-500 focus:ring-offset-2"
-          >
+          </Button>
+          <Button onClick={handleCancel} variant="secondary">
             Cancelar
-          </button>
+          </Button>
         </div>
       </div>
     </div>

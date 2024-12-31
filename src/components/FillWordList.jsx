@@ -1,5 +1,9 @@
 "use client";
 import React, { useState } from 'react';
+import Label from '@/templates/Labels';
+import Button from '@/templates/Button';
+import DraggableCard from '@/templates/DraggableCard';
+import DroppableContainer from '@/templates/DroppableContainer';
 
 const DraggableWords = () => {
   const [title, setTitle] = useState("");
@@ -25,16 +29,16 @@ const DraggableWords = () => {
     while ((match = regex.exec(text)) !== null) {
       const word = match[1];
       words.push(word);
-      
+
       if (match.index > lastIndex) {
         newDisplayText.push({ type: 'text', content: text.slice(lastIndex, match.index) });
       }
-      
+
       newDisplayText.push({ type: 'drop', index: words.length - 1 });
-      
+
       lastIndex = match.index + match[0].length;
     }
-    
+
     if (lastIndex < text.length) {
       newDisplayText.push({ type: 'text', content: text.slice(lastIndex) });
     }
@@ -80,22 +84,6 @@ const DraggableWords = () => {
     }
   };
 
-  const DroppableContainer = ({ index }) => {
-    return (
-      <div
-        className="border-dashed border-2 border-gray-300 p-2 w-32 h-10 flex items-center justify-center mx-1"
-        onDrop={(e) => handleDrop(e, index)}
-        onDragOver={handleDragOver}
-      >
-        {droppedTexts[index] ? (
-          <span className="text-gray-800 text-sm">{droppedTexts[index]} - {feedback[index]}</span>
-        ) : (
-          <span className="text-gray-400 text-sm">Drop here</span>
-        )}
-      </div>
-    );
-  };
-
   const handleSave = () => {
     console.log("Title:", title);
     console.log("Text to complete:", textToComplete);
@@ -114,7 +102,7 @@ const DraggableWords = () => {
   return (
     <div className="p-4">
       <div className="mb-4">
-        <label className="block mb-2">Title:</label>
+        <Label>Title:</Label>
         <input
           type="text"
           value={title}
@@ -123,8 +111,10 @@ const DraggableWords = () => {
         />
       </div>
       <div className="mb-4">
-        <label className="block mb-2">Texto a Completar:</label>
-        <label className="block mb-2">El texto entre "[ ]" se usará para formar la oracion:</label>
+        <Label>
+          Texto a Completar: 
+          <span className="block text-sm">El texto entre "[ ]" se usará para formar la oración.</span>
+        </Label>
         <textarea
           value={textToComplete}
           onChange={handleTextChange}
@@ -135,35 +125,33 @@ const DraggableWords = () => {
       <div className="mb-4">
         <div className="flex flex-wrap gap-2 mb-4">
           {correctWords.map((word, index) => (
-            <div
-              key={index}
-              className="cursor-pointer bg-blue-100 text-blue-600 px-4 py-2 rounded shadow hover:bg-blue-200"
-              draggable
-              onDragStart={(e) => handleDragStart(e, word)}
-            >
-              {word}
-            </div>
+            <DraggableCard key={index} word={word} onDragStart={handleDragStart} />
           ))}
         </div>
 
         <div className="border rounded p-4 flex flex-wrap items-center">
-          {displayText.map((item, index) => 
+          {displayText.map((item, index) =>
             item.type === 'text' ? (
               <span key={index} className="mr-1">{item.content}</span>
             ) : (
-              <DroppableContainer key={index} index={item.index} />
+              <DroppableContainer
+                key={index}
+                droppedText={droppedTexts[item.index]}
+                feedback={feedback[item.index]}
+                onDrop={(e) => handleDrop(e, item.index)}
+                onDragOver={handleDragOver}
+              />
             )
           )}
         </div>
       </div>
 
       <div className="flex space-x-4">
-        <button onClick={handleSave} className="bg-green-500 text-white px-4 py-2 rounded">Guardar</button>
-        <button onClick={handleCancel} className="bg-red-500 text-white px-4 py-2 rounded">Cancelar</button>
+        <Button onClick={handleSave} variant="primary">Guardar</Button>
+        <Button onClick={handleCancel} variant="secondary">Cancelar</Button>
       </div>
     </div>
   );
 };
 
 export default DraggableWords;
-
